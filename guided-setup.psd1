@@ -95,7 +95,7 @@ AliasesToExport = @()
 # Autogenerate with this command:
 #   [string]::join(',', (Get-ChildItem -Recurse -File | % { [io.path]::GetRelativePath('C:\Users\salas\git\guided-setup', $_.fullname) } | ForEach-Object { "'$_'" } ))
 #
-FileList = @('guided-setup.psd1','guided-setup.psm1','LICENSE','README.md','functions\docker.ps1','functions\helm.ps1','functions\input.ps1','functions\k8s.ps1','functions\keytool.ps1','functions\mariadb.ps1','functions\prereqs.ps1','functions\resource.ps1','functions\step.ps1','functions\utils.ps1','functions\velero.ps1','licenses\powershell-algorithms\LICENSE','licenses\powershell-algorithms\README.md')
+FileList = @('guided-setup.psd1','guided-setup.psm1','LICENSE','README.md','functions\docker.ps1','functions\helm.ps1','functions\input.ps1','functions\k8s.ps1','functions\keytool.ps1','functions\mariadb.ps1','functions\resource.ps1','functions\step.ps1','functions\utils.ps1','functions\velero.ps1','licenses\powershell-algorithms\LICENSE','licenses\powershell-algorithms\README.md')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
