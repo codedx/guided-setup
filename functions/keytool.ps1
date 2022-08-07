@@ -80,7 +80,7 @@ function Import-TrustedCaCerts([string] $keystorePath, [string] $keystorePwd, [s
 	}
 }
 
-function Test-Certificate([string] $path) {
+function Test-KeyToolCertificate([string] $path) {
 
 	$Local:ErrorActionPreference = 'SilentlyContinue'
 	keytool -printcert -file $path *>&1 | out-null

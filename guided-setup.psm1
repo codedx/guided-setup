@@ -805,7 +805,7 @@ class CertificateFileQuestion : PathQuestion {
 				break
 			}
 
-			if (Test-Certificate $this.response) {
+			if (Test-KeyToolCertificate $this.response) {
 				break
 			}
 			Write-Host "Unable to read certificate file '$($this.response)' - does the file contain a certificate?"

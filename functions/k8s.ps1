@@ -187,7 +187,7 @@ function New-Certificate([string] $csrSignerName, [string] $caCertPath, [string]
 			New-CsrResource $csrSignerName $resourceName "$dnsName.csr" "$dnsName.csrr" $namespace
 			New-CsrApproval $resourceName
 	
-			$certText = Get-Certificate $resourceName
+			$certText = Get-CertificateFromCsr $resourceName
 			$caCertText = [io.file]::ReadAllText($caCertPath)
 			"$certText`n$caCertText" | out-file $certPublicKeyFile -Encoding ascii -Force
 
@@ -335,7 +335,7 @@ function New-CsrApproval([string] $resourceName) {
 	}
 }
 
-function Get-Certificate([string] $resourceName, [int] $waitSeconds=120) {
+function Get-CertificateFromCsr([string] $resourceName, [int] $waitSeconds=120) {
 
 	$sleepSeconds = [math]::min(60, ($waitSeconds * .05))
 	$timeoutTime = [datetime]::Now.AddSeconds($waitSeconds)

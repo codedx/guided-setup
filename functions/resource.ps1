@@ -6,7 +6,7 @@
 #>
 
 function Get-ResourceDirectoryPath([string] $kind) {
-	return "./GitOps/$kind"
+	return "./Resources/$kind"
 }
 
 function Set-ResourceDirectory([string] $kind) {
@@ -405,7 +405,6 @@ spec:
 
 
 function New-HelmCommand(
-	[string]    $name,
 	[string]    $namespace,
 	[string]    $releaseName,
 	[string]    $chartRootPath,
@@ -421,11 +420,16 @@ function New-HelmCommand(
 	}
 
 	$dockerImageNamesFileContent = ''
-	$dockerImageNames.Keys | ForEach-Object {
-		$dockerImageNamesFileContent += "$_`: $($dockerImageNames[$_])`n"
+	if ($null -ne $dockerImageNames) {
+		$dockerImageNames.Keys | ForEach-Object {
+			$dockerImageNamesFileContent += "$_`: $($dockerImageNames[$_])`n"
+		}
 	}
 
-	$helmValuesPath = New-ResourceFile 'HelmCommand' $namespace "values-docker-$releaseName" $dockerImageNamesFileContent
+	$helmValuesPath = @()
+	if ('' -ne $dockerImageNamesFileContent) {
+		$helmValuesPath += New-ResourceFile 'HelmCommand' $namespace "values-docker-$releaseName" $dockerImageNamesFileContent
+	}
 	$values += $helmValuesPath
 
 	$helmOutput = "helm upgrade --namespace $namespace --install $crdAction $valuesParam "
@@ -434,6 +438,5 @@ function New-HelmCommand(
 	}
 	$helmOutput += "$releaseName $chartRootPath"
 
-	$helmCommandDirectory = Get-ResourceDirectoryPath 'HelmCommand'
-	$helmOutput | Out-File (join-path $helmCommandDirectory "helmcommand-install-$releaseName") -Encoding utf8
+	New-ResourceFile 'HelmCommand' $namespace "helmcommand-install-$releaseName" $helmOutput
 }

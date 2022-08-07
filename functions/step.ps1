@@ -1,16 +1,16 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 30b223d9-c262-4631-9e29-c6ee8191dc26
 .AUTHOR Code Dx
 .DESCRIPTION Includes graph-related helpers.
 #>
 
-function Add-Step([Graph] $graph, [Step] $step) {
+function Add-Step([Graph] $graph, [GuidedSetupStep] $step) {
 
 	$graph.addVertex($step) | out-null
 }
 
-function Add-StepTransition([Graph] $graph, [Step] $from, [Step] $to) {
+function Add-StepTransition([Graph] $graph, [GuidedSetupStep] $from, [GuidedSetupStep] $to) {
 
 	Write-Debug "Adding step transition from $($from.name) to $($to.name)..."
 	foreach ($neighbor in $from.getNeighbors()) {
@@ -21,7 +21,7 @@ function Add-StepTransition([Graph] $graph, [Step] $from, [Step] $to) {
 	$graph.addEdge([GraphEdge]::new($from, $to)) | out-null
 }
 
-function Add-StepTransitions([Graph] $graph, [Step] $from, [Step[]] $toSteps) {
+function Add-StepTransitions([Graph] $graph, [GuidedSetupStep] $from, [GuidedSetupStep[]] $toSteps) {
 
 	for ($i = 0; $i -lt $toSteps.count; $i++) {
 		$from = $i -eq 0 ? $from : $toSteps[$i-1]

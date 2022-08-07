@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 0bccb44c-14f1-44c0-b41b-3fa02f5bb412
 .AUTHOR Code Dx
 .DESCRIPTION Includes MariaDB-related helpers
@@ -138,7 +138,7 @@ function New-Database([string] $namespace,
 	}
 
 	$importPath = '/tmp/import.sql'
-	Copy-K8sItem $namespaceCodeDx $databaseDump $podName $containerName $importPath
+	Copy-K8sItem $namespace $databaseDump $podName $containerName $importPath
 
 	kubectl -n $namespace exec -c $containerName $podName -- bash -c "mysql -uroot --password=""$rootPwd"" $databaseName < $importPath"
 	if (0 -ne $LASTEXITCODE) {

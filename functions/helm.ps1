@@ -45,14 +45,12 @@ function Get-HelmValues([string] $namespace, [string] $releaseName) {
 	ConvertFrom-Json $values
 }
 
-function Invoke-HelmSingleDeployment([string] $message, 
+function Invoke-HelmCommand([string] $message, 
 	[int]      $waitSeconds, 
 	[string]   $namespace, 
 	[string]   $releaseName, 
 	[string]   $chartReference, 
-	[string]   $valuesFile, 
-	[string]   $deploymentName, 
-	[int]      $totalReplicas, 
+	[string]   $valuesFile,  
 	[string[]] $extraValuesPaths, 
 	[string]   $version, 
 	[switch]   $reuseValues,
@@ -133,10 +131,6 @@ function Invoke-HelmSingleDeployment([string] $message,
 		}
 	} finally {
 		$tmpPaths | ForEach-Object { Write-Verbose "Removing temporary file '$_'"; Remove-Item $_ -Force }
-	}
-
-	if (-not $dryRun) {
-		Wait-Deployment "Helm Upgrade/Install: $message" $waitSeconds $namespace $deploymentName $totalReplicas
 	}
 
 	return $helmOutput
