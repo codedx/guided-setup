@@ -1,6 +1,6 @@
 ## Overview
 
-This repository contains a framework for installing an application on a Kubernetes cluster using a setup wizard based on a directed graph. It depends on the cross-platform PowerShell Core software, which runs on Windows, Linux, and macOS.
+This repository contains a framework for installing an application on a Kubernetes cluster using a setup wizard based on a directed graph. It depends on the cross-platform [PowerShell Core](https://docs.microsoft.com/en-us/powershell/scripting/overview) software, which runs on Windows, Linux, and macOS.
 
 ## Reference Implementation
 
