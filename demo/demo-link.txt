@@ -1,0 +1,4 @@
+Follow the link below for a reference implementation for the recommended reuse of the 
+guided-setup module. The demo implementation uses Bitnami’s MariaDB Helm chart.
+
+https://github.com/codedx/guided-setup/tree/main/demo

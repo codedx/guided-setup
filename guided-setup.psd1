@@ -70,7 +70,7 @@ PowerShellVersion = '7.0.0'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 #
-# Autogenerate with this command:
+# Autogenerate with these commands:
 #   $files = (Get-ChildItem -LiteralPath './functions' -Recurse -Include '*.ps1','*.psm1') + (Get-ChildItem './guided-setup.psm1')
 #   [string]::join(',',($files | ForEach-Object { Select-String -input $_ -pattern '^function\s([^(]+)(?:\s|\()' -allmatches | ForEach-Object { "'$($_.matches.groups[1].value)'" } } | Sort-Object))
 #
@@ -93,11 +93,12 @@ AliasesToExport = @()
 
 # List of all files packaged with this module
 #
-# Autogenerate with this command:
+# Autogenerate with these commands:
 #   $location = get-location
-#   [string]::join(',', (Get-ChildItem -Recurse -Include '*.ps1' -Attributes 'hidden','normal' | % { [io.path]::GetRelativePath($location, $_.fullname) } | ForEach-Object { "'$_'" } ))
+#   $files = @("'./demo/demo-link.txt'") + (Get-ChildItem -LiteralPath ./functions -Recurse -Include '*.ps1' -Attributes 'hidden','normal' | % { [io.path]::GetRelativePath($location, $_.fullname) } | ForEach-Object { "'$_'" } )
+#   [string]::join(',', $files)
 #
-FileList = @('demo/core/setup/directory.ps1','demo/core/setup/helm.ps1','demo/core/setup/prereqs.ps1','demo/core/setup/resources.ps1','demo/core/setup/validate.ps1','demo/core/steps/config.ps1','demo/core/steps/context.ps1','demo/core/steps/credential.ps1','demo/core/steps/helm.ps1','demo/core/steps/options.ps1','demo/core/steps/prereq.ps1','demo/core/steps/replication.ps1','demo/core/steps/step.ps1','demo/core/steps/summary.ps1','demo/core/steps/welcome.ps1','demo/core/setup.ps1','demo/.guided-setup.ps1','demo/.install-guided-setup-module.ps1','demo/guided-setup-check-prereqs.ps1','demo/guided-setup.ps1','functions/docker.ps1','functions/helm.ps1','functions/input.ps1','functions/k8s.ps1','functions/keytool.ps1','functions/mariadb.ps1','functions/resource.ps1','functions/step.ps1','functions/utils.ps1','functions/velero.ps1')
+FileList = @('./demo/demo-link.txt','functions/docker.ps1','functions/helm.ps1','functions/input.ps1','functions/k8s.ps1','functions/keytool.ps1','functions/mariadb.ps1','functions/resource.ps1','functions/step.ps1','functions/utils.ps1','functions/velero.ps1')
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
