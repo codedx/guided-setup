@@ -122,7 +122,9 @@ Invoke-HelmCommand 'MariaDB' `
 	$valuesPaths
 
 ### waiting for statefulsets, showing deployment progress
-Wait-StatefulSet "StatefulSet: $primaryName" $helmDeployWaitTimeSeconds $namespace "$releaseName-$primaryName" 1
 if ($replicaCount -gt 0) {
+	Wait-StatefulSet "StatefulSet: $primaryName" $helmDeployWaitTimeSeconds $namespace "$releaseName-$primaryName" 1
 	Wait-StatefulSet "StatefulSet: $replicaName" $helmDeployWaitTimeSeconds $namespace "$releaseName-$replicaName" $replicaCount
+} else {
+	Wait-StatefulSet "StatefulSet: $releaseName" $helmDeployWaitTimeSeconds $namespace $releaseName 1
 }

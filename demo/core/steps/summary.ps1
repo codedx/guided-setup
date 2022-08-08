@@ -51,6 +51,7 @@ the script command line to a file and run it later.
 		'replicaCount','binaryLogExpirationSeconds','lowerCaseTableNames' | ForEach-Object {
 			$this.AddIntParameter($sb, $_)
 		}
+		$this.AddSwitchParameter($sb, 'resourceFilesOnly')
 
 		$cmdLine = $sb.ToString()
 
@@ -77,6 +78,14 @@ the script command line to a file and run it later.
 		$parameterValue = ($this.config | select-object -property $parameterName).$parameterName
 		if ($null -ne $parameterValue) {
 			$sb.appendformat(" -{0} {1}", $parameterName, $parameterValue)
+		}
+	}
+
+	[void]AddSwitchParameter([text.stringbuilder] $sb, [string] $parameterName) {
+
+		$parameterValue = ($this.config | select-object -property $parameterName).$parameterName
+		if ($null -ne $parameterValue -and $parameterValue) {
+			$sb.appendformat(" -{0}", $parameterName)
 		}
 	}
 

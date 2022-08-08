@@ -17,6 +17,7 @@ Write-Host 'Loading...' -NoNewline
 './core/steps/config.ps1',
 './core/steps/step.ps1',
 './core/steps/welcome.ps1',
+'./core/steps/method.ps1',
 './core/steps/context.ps1',
 './core/steps/prereq.ps1',
 './core/steps/credential.ps1',
@@ -38,7 +39,7 @@ $config = [ConfigInput]::new()
 $graph = New-Object Graph($true)
 
 $s = @{}
-[Welcome],
+[Welcome],[DeploymentMethod],
 [Prerequisites],[PrequisitesNotMet],
 [ChooseContext],[SelectContext],[HandleNoContext],
 [WorkDir],
@@ -52,8 +53,10 @@ $s = @{}
 	Add-Step $graph $s[$_]
 }
 
-Add-StepTransitions $graph $s[[Welcome]] $s[[Prerequisites]],$s[[PrequisitesNotMet]],$s[[Abort]]
-Add-StepTransitions $graph $s[[Welcome]] $s[[Prerequisites]],$s[[ChooseContext]]
+Add-StepTransitions $graph $s[[Welcome]] $s[[DeploymentMethod]],$s[[Prerequisites]]
+
+Add-StepTransitions $graph $s[[Prerequisites]] $s[[PrequisitesNotMet]],$s[[Abort]]
+Add-StepTransitions $graph $s[[Prerequisites]] $s[[ChooseContext]]
 
 Add-StepTransitions $graph $s[[ChooseContext]] $s[[HandleNoContext]],$s[[Abort]]
 Add-StepTransitions $graph $s[[ChooseContext]] $s[[SelectContext]],$s[[PrequisitesNotMet]],$s[[Abort]]

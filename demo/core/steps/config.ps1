@@ -4,6 +4,7 @@ class ConfigInput {
 	[string] $missingPrereqs
 
 	[string] $workDir
+	[bool]   $resourceFilesOnly
 
 	[string] $kubeContextName
 
