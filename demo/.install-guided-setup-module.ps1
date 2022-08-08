@@ -14,7 +14,7 @@ function Test-AvailableModule($name, $version) {
 }
 
 $guidedSetupModuleName = 'Guided-Setup'
-$guidedSetupRequiredVersion = '1.4.0' # must match constant in using-module statements
+$guidedSetupRequiredVersion = '1.5.0' # must match constant in using-module statements
 
 $verbosePref = $global:VerbosePreference
 try {
