@@ -11,12 +11,12 @@ function Set-NonReplicationWithDefaultOptionsPass([int] $deployType, [int] $save
 	$global:inputs.enqueue(0) # select minikube context
 	$global:inputs.enqueue($TestDrive) # workdir
 	$global:inputs.enqueue('db') # namespace
-    $global:inputs.enqueue('mariadb') # release
-    $global:inputs.enqueue(0) # replicas
-    $global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
+	$global:inputs.enqueue('mariadb') # release
+	$global:inputs.enqueue(0) # replicas
+	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
 	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd confirm
-    $global:inputs.enqueue(0) # default options
-    $global:inputs.enqueue($saveOption) # next step save option
+	$global:inputs.enqueue(0) # default options
+	$global:inputs.enqueue($saveOption) # next step save option
 }
 
 function Set-NonReplicationWithOptionsPass([int] $deployType, [string] $characterSet, [string] $collation, [int] $tableNameCase, [int] $saveOption) {
@@ -28,15 +28,15 @@ function Set-NonReplicationWithOptionsPass([int] $deployType, [string] $characte
 	$global:inputs.enqueue(0) # select minikube context
 	$global:inputs.enqueue($TestDrive) # workdir
 	$global:inputs.enqueue('db') # namespace
-    $global:inputs.enqueue('mariadb') # release
-    $global:inputs.enqueue(0) # replicas
-    $global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
+	$global:inputs.enqueue('mariadb') # release
+	$global:inputs.enqueue(0) # replicas
+	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
 	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd confirm
-    $global:inputs.enqueue(1) # custom options
+	$global:inputs.enqueue(1) # custom options
 	$global:inputs.enqueue($characterSet) # character set
 	$global:inputs.enqueue($collation) # collation
 	$global:inputs.enqueue($tableNameCase) # table name case
-    $global:inputs.enqueue($saveOption) # next step save option
+	$global:inputs.enqueue($saveOption) # next step save option
 }
 
 function Set-ReplicationWithOptionsPass([int] $deployType, [int] $replicaCount, [int] $binaryLogExpiration, [string] $characterSet, [string] $collation, [int] $tableNameCase, [int] $saveOption) {
@@ -48,16 +48,16 @@ function Set-ReplicationWithOptionsPass([int] $deployType, [int] $replicaCount, 
 	$global:inputs.enqueue(0) # select minikube context
 	$global:inputs.enqueue($TestDrive) # workdir
 	$global:inputs.enqueue('db') # namespace
-    $global:inputs.enqueue('mariadb') # release
-    $global:inputs.enqueue($replicaCount) # replicas
+	$global:inputs.enqueue('mariadb') # release
+	$global:inputs.enqueue($replicaCount) # replicas
 	$global:inputs.enqueue($binaryLogExpiration) # binary log file expiration
-    $global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
+	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd
 	$global:inputs.enqueue((New-Password 'my-root-db-password')) # specify root db pwd confirm
 	$global:inputs.enqueue((New-Password 'my-replicator-db-password')) # specify root db pwd
 	$global:inputs.enqueue((New-Password 'my-replicator-db-password')) # specify root db pwd confirm
-    $global:inputs.enqueue(1) # custom options
+	$global:inputs.enqueue(1) # custom options
 	$global:inputs.enqueue($characterSet) # character set
 	$global:inputs.enqueue($collation) # collation
 	$global:inputs.enqueue($tableNameCase) # table name case
-    $global:inputs.enqueue($saveOption) # next step save option
+	$global:inputs.enqueue($saveOption) # next step save option
 }
