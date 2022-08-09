@@ -21,6 +21,8 @@ You can view installed modules with this command:
 PS /> Get-InstalledModule
 ```
 
+>Note: You can use Get-InstalledModule and the InstalledLocation property to find the location of an installed module. The PSModulePath environment variable must include the root module directory for the guided-setup module to load successfully.
+
 ## Uninstallation
 
 You can uninstall the guided-setup module with this command:

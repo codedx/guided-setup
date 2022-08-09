@@ -1,6 +1,20 @@
 ## Overview
 
-This reference implementation describes how to use the [guided-setup PowerShell Core module](https://www.powershellgallery.com/packages?q=guided-setup). The demo files show how the guided setup can assist with the configuration and deployment of [Bitnami's MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). You can start the setup by [installing PowerShell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) and running this command: `pwsh ./guided-setup.ps1`.
+This reference implementation describes how to use the [guided-setup PowerShell Core module](https://www.powershellgallery.com/packages?q=guided-setup). The demo files show how the guided setup can assist with the configuration and deployment of [Bitnami's MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). 
+
+This MariaDB guided setup and deployment script provide the following benefits:
+
+- asserts prerequisites
+- creates Kubernetes (K8s) Secret dependency for MariaDB passwords
+- avoids using the same password for root and replicator database accounts
+- creates K8s ConfigMap dependency for MariaDB options
+- configures binary log expiration when using replication
+- configures optional character set, collation, and table name case
+- generates resource files or orchestrates helm deployment
+
+>Note: You do not need to cover every possible deployment configuration with a guided setup and related deployment script.
+
+You can start the setup by [installing PowerShell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) and running this command: `pwsh ./guided-setup.ps1`.
 
 ![Welcome](images/welcome.png)
 
