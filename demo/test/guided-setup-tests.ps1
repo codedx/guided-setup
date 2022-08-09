@@ -39,21 +39,99 @@ function Set-TestDefaults() {
 	$global:prereqsSatisified = $false
 }
 
-Describe 'Generate Setup Command from Default Pass' -Tag 'DefaultPass' {
+Describe 'Generate Setup Command w/o Replication And Default Options' -Tag 'NoReplicationDefaultOptions' {
 
 	BeforeEach {
 		Set-TestDefaults
 	}
 
-	It '(01) Default responses should generate run-setup.ps1' {
+	It '(01) Non-replication with default options should generate invoke-helm setup command' {
 	
-		Set-DefaultPass 1 # save w/o prereqs command
+		Set-NonReplicationWithDefaultOptionsPass 0 1
 
 		New-Mocks
 		. ./guided-setup.ps1
 
 		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
 		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -replicaCount 0 -binaryLogExpirationSeconds 0 -lowerCaseTableNames 0"
+		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
+	}
+
+	It '(02) Non-replication with default options should generate create-resource-files setup command' {
+	
+		Set-NonReplicationWithDefaultOptionsPass 1 1
+
+		New-Mocks
+		. ./guided-setup.ps1
+
+		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
+		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -replicaCount 0 -binaryLogExpirationSeconds 0 -lowerCaseTableNames 0 -resourceFilesOnly"
+		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
+	}
+}
+
+Describe 'Generate Setup Command w/o Replication And MariaDB Options' -Tag 'NoReplicationWithOptions' {
+
+	BeforeEach {
+		Set-TestDefaults
+	}
+
+	It '(03) Non-replication with options should generate invoke-helm setup command' {
+	
+		Set-NonReplicationWithOptionsPass 0 'utf8mb4' 'utf8mb4_general_ci' 1 1
+
+		New-Mocks
+		. ./guided-setup.ps1
+
+		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
+		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -characterSet 'utf8mb4' -collation 'utf8mb4_general_ci' -replicaCount 0 -binaryLogExpirationSeconds 0 -lowerCaseTableNames 1"
+		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
+	}
+
+	It '(04) Non-replication with options should generate create-resource-files setup command' {
+	
+		Set-NonReplicationWithOptionsPass 1 'utf8mb4' 'utf8mb4_general_ci' 1 1
+
+		New-Mocks
+		. ./guided-setup.ps1
+
+		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
+		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -characterSet 'utf8mb4' -collation 'utf8mb4_general_ci' -replicaCount 0 -binaryLogExpirationSeconds 0 -lowerCaseTableNames 1 -resourceFilesOnly"
+		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
+	}
+}
+
+Describe 'Generate Setup Command w/ Replication And MariaDB Options' -Tag 'WithReplicationWithOptions' {
+
+	BeforeEach {
+		Set-TestDefaults
+	}
+
+	It '(05) Non-replication with options should generate invoke-helm setup command' {
+	
+		$binaryLogExpirationDays = 45
+		Set-ReplicationWithOptionsPass 0 1 $binaryLogExpirationDays 'utf8mb4' 'utf8mb4_general_ci' 1 1
+
+		New-Mocks
+		. ./guided-setup.ps1
+
+		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
+		$binaryLogExpirationSeconds = 60 * 60 * 24 * $binaryLogExpirationDays
+		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -replicatorPwd 'my-replicator-db-password' -characterSet 'utf8mb4' -collation 'utf8mb4_general_ci' -replicaCount 1 -binaryLogExpirationSeconds $binaryLogExpirationSeconds -lowerCaseTableNames 1"
+		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
+	}
+
+	It '(06) Non-replication with options should generate create-resource-files setup command' {
+	
+		$binaryLogExpirationDays = 45
+		Set-ReplicationWithOptionsPass 1 1 $binaryLogExpirationDays 'utf8mb4' 'utf8mb4_general_ci' 1 1
+
+		New-Mocks
+		. ./guided-setup.ps1
+
+		$runSetupFile = join-path $TestDrive 'run-setup.ps1'
+		$binaryLogExpirationSeconds = 60 * 60 * 24 * $binaryLogExpirationDays
+		$expectedParams = "-kubeContextName 'minikube' -namespace 'db' -releaseName 'mariadb' -rootPwd 'my-root-db-password' -replicatorPwd 'my-replicator-db-password' -characterSet 'utf8mb4' -collation 'utf8mb4_general_ci' -replicaCount 1 -binaryLogExpirationSeconds $binaryLogExpirationSeconds -lowerCaseTableNames 1 -resourceFilesOnly"
 		Test-SetupParameters $PSScriptRoot $runSetupFile $TestDrive $expectedParams | Should -BeTrue
 	}
 }
