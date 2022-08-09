@@ -10,7 +10,7 @@ function Test-SetupPreqs([ref] $messages, [string] $context, [switch] $checkKube
 		$messages.Value += 'Unable to continue because you must run this script with PowerShell Core 7 or later'
 	}
 	
-	$apps = 'helm','kubectl','git'
+	$apps = 'helm','kubectl'
 
 	$appStatus = @{}
 	$apps | foreach-object {
