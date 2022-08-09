@@ -58,7 +58,9 @@ The [setup.ps1](core/setup.ps1) file can invoke helm or create the Helm and K8s 
 
 Specifying MariaDB options like binary log file expiration requires appending settings to the default MariaDB configuration. The [options.ps1](core/steps/options.ps1) file includes the [MariaDBOptions](core/steps/options.ps1#L1) step, asking whether default MariaDB options will be used, or if the user wants to specify a specific character set, collation, and table name option. The [setup](core/setup) directory contains files upon which setup.ps1 depends, and the resources.ps1 file includes the [New-MariaDBOptionConfigMap](core/setup/resources.ps1#L27) function that helps you specify optional MariaDB options.
 
-A guided setup implementation does not need to cover every deployment configuration. For example, the Bitnami MariaDB Helm chart includes many parameters not covered by the reference implementation. The [$extraValuesFiles](core/setup.ps1#L26) parameter accepts additional helm values files outside the scope of the guided setup. Similarly, you can include any additional setup.ps1 parameters that are outside the scope of your guided setup.
+A guided setup implementation does not need to cover every deployment configuration. For example, the Bitnami MariaDB Helm chart includes many parameters not covered by the reference implementation. The [$extraValuesFiles](core/setup.ps1#L26) parameter accepts additional helm values files outside the scope of the guided setup. Similarly, you can include any additional setup.ps1 parameters that are outside the scope of your guided setup (e.g., the `primaryName` and `replicaName` setup.ps1 parameters).
+
+![Parameters](images/parameters.png)
 
 ## Pester Tests
 
