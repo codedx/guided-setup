@@ -9,8 +9,8 @@ $ErrorActionPreference = 'Stop'
 
 Set-PSDebug -Strict
 
-function Test-AvailableModule($name, $version) {
-	$null -ne (Get-Module -ListAvailable -Name $name | Where-Object { $_.version -eq $version })	
+function Test-AvailableInstalledModule($name, $version) {
+	$null -ne (Get-InstalledModule -Name 'guided-setup' -RequiredVersion '1.6.0' -ErrorAction 'SilentlyContinue')
 }
 
 $guidedSetupModuleName = 'Guided-Setup'
@@ -20,7 +20,7 @@ $verbosePref = $global:VerbosePreference
 try {
 	$global:VerbosePreference = 'SilentlyContinue'
 
-	$isModuleAvailable = Test-AvailableModule $guidedSetupModuleName $guidedSetupRequiredVersion
+	$isModuleAvailable = Test-AvailableInstalledModule $guidedSetupModuleName $guidedSetupRequiredVersion
 
 	$status = 'unavailable'
 	if ($isModuleAvailable) {
@@ -45,7 +45,7 @@ try {
 		Install-Module -Name $guidedSetupModuleName -RequiredVersion $guidedSetupRequiredVersion -Scope CurrentUser
 	}
 
-	if (-not (Test-AvailableModule $guidedSetupModuleName $guidedSetupRequiredVersion)) {
+	if (-not (Test-AvailableInstalledModule $guidedSetupModuleName $guidedSetupRequiredVersion)) {
 		Write-Error "Unable to continue without version $guidedSetupRequiredVersion of the $guidedSetupModuleName module."
 	}
 
