@@ -13,7 +13,7 @@ function Test-AvailableInstalledModule($name, $version) {
 	$null -ne (Get-InstalledModule -Name 'guided-setup' -RequiredVersion '1.5.0' -ErrorAction 'SilentlyContinue')
 }
 
-$guidedSetupModuleName = 'Guided-Setup'
+$guidedSetupModuleName = 'guided-setup'
 $guidedSetupRequiredVersion = '1.5.0' # must match constant in using-module statements
 
 $verbosePref = $global:VerbosePreference
