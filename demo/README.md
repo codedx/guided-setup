@@ -1,6 +1,6 @@
 ## Overview
 
-This reference implementation describes how to use the [guided-setup PowerShell Core module](https://www.powershellgallery.com/packages?q=guided-setup). The demo files show how the guided setup can assist with the configuration and deployment of Bitnami's MariaDB Helm chart. You can start the setup by [installing PowerShell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) and running this command: `pwsh ./guided-setup.ps1`.
+This reference implementation describes how to use the [guided-setup PowerShell Core module](https://www.powershellgallery.com/packages?q=guided-setup). The demo files show how the guided setup can assist with the configuration and deployment of [Bitnami's MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). You can start the setup by [installing PowerShell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) and running this command: `pwsh ./guided-setup.ps1`.
 
 The reference implementation has two main parts. The first is the guided setup, a series of screens that gather the desired deployment configuration from a user. The second is a setup script that takes the setup responses and either orchestrates the deployment by running helm or stops short of running helm by producing required helm values and K8s resource files.
 
