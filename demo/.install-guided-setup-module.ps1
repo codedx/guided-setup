@@ -10,7 +10,7 @@ $ErrorActionPreference = 'Stop'
 Set-PSDebug -Strict
 
 function Test-AvailableInstalledModule($name, $version) {
-	$null -ne (Get-InstalledModule -Name 'guided-setup' -RequiredVersion '1.6.0' -ErrorAction 'SilentlyContinue')
+	$null -ne (Get-InstalledModule -Name 'guided-setup' -RequiredVersion '1.5.0' -ErrorAction 'SilentlyContinue')
 }
 
 $guidedSetupModuleName = 'Guided-Setup'
