@@ -1,11 +1,11 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 968cc756-ddef-4289-844e-4341ef350f48
 .AUTHOR Guided Setup Author
 .DESCRIPTION Establishes setup graph and starts guided setup
 #>
 
-using module @{ModuleName='guided-setup'; RequiredVersion='1.5.0' }
+using module @{ModuleName='guided-setup'; RequiredVersion='1.6.0' }
 
 $ErrorActionPreference = 'Stop'
 $VerbosePreference = 'Continue'

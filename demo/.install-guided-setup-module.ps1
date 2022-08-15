@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID f71af2c9-8015-4f6a-8aab-e4080b4ff428
 .AUTHOR Guided Setup Author
 .DESCRIPTION Conditionally installs guided-setup module
@@ -9,18 +9,19 @@ $ErrorActionPreference = 'Stop'
 
 Set-PSDebug -Strict
 
-function Test-AvailableInstalledModule($name, $version) {
-	$null -ne (Get-InstalledModule -Name 'guided-setup' -RequiredVersion '1.5.0' -ErrorAction 'SilentlyContinue')
+function Test-AvailableModule($name, $version) {
+	$null -ne (Get-InstalledModule -Name $name -RequiredVersion $version -ErrorAction 'SilentlyContinue') -or
+		$null -ne (Get-Module -ListAvailable -Name $name | Where-Object { $_.version -eq $version })
 }
 
 $guidedSetupModuleName = 'guided-setup'
-$guidedSetupRequiredVersion = '1.5.0' # must match constant in using-module statements
+$guidedSetupRequiredVersion = '1.6.0' # must match constant in using-module statements
 
 $verbosePref = $global:VerbosePreference
 try {
 	$global:VerbosePreference = 'SilentlyContinue'
 
-	$isModuleAvailable = Test-AvailableInstalledModule $guidedSetupModuleName $guidedSetupRequiredVersion
+	$isModuleAvailable = Test-AvailableModule $guidedSetupModuleName $guidedSetupRequiredVersion
 
 	$status = 'unavailable'
 	if ($isModuleAvailable) {
@@ -42,10 +43,11 @@ try {
 		# Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
 		Write-Host "`nTrying to install $guidedSetupModuleName module v$guidedSetupRequiredVersion...`n"
+		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 		Install-Module -Name $guidedSetupModuleName -RequiredVersion $guidedSetupRequiredVersion -Scope CurrentUser
 	}
 
-	if (-not (Test-AvailableInstalledModule $guidedSetupModuleName $guidedSetupRequiredVersion)) {
+	if (-not (Test-AvailableModule $guidedSetupModuleName $guidedSetupRequiredVersion)) {
 		Write-Error "Unable to continue without version $guidedSetupRequiredVersion of the $guidedSetupModuleName module."
 	}
 

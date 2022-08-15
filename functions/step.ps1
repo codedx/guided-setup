@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.0
+.VERSION 1.2.0
 .GUID 30b223d9-c262-4631-9e29-c6ee8191dc26
 .AUTHOR Code Dx
 .DESCRIPTION Includes graph-related helpers.
@@ -54,7 +54,7 @@ function Write-StepGraph([string] $path, [hashtable] $steps, [collections.stack]
 			continue
 		}
 		
-		$link = "$step -> $previousStep"
+		$link = "$previousStep -> $step"
 		"$link [color=blue];" | out-file $path -append
 
 		$linksVisited.add($link) | out-null
