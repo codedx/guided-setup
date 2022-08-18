@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID bed24bcf-8230-4909-8619-50d5bc381721
 .AUTHOR Guided Setup Author
 .DESCRIPTION Prepares helm and K8s resource files and optionally runs deployment
@@ -19,7 +19,7 @@ param (
 	[string]   $rootPwd = ([guid]::newguid().guid.replace('-','')),
 	[string]   $replicatorPwd = ([guid]::newguid().guid.replace('-','')),
 
-	[string]   $characterSet = 'UTF8',
+	[string]   $characterSet = 'utf8',
 	[string]   $collation = 'utf8_general_ci',
 	[int]      $lowerCaseTableNames = 0,
 

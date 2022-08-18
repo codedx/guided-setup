@@ -34,7 +34,7 @@ the script command line to a file and run it later.
 
 		$options = @(
 			[tuple]::create('Save and &Run Script', 'Run the setup script after saving the script command a file'),
-			[tuple]::create('&Save Script', 'Save the setup script using password/key script parameters')
+			[tuple]::create('&Save Script', 'Save the setup script to run later')
 		)
 		return new-object MultipleChoiceQuestion($prompt, $options, -1)
 	}
@@ -57,7 +57,7 @@ the script command line to a file and run it later.
 
 		$runNow = ([MultipleChoiceQuestion]$question).choice -eq 0
 
-		$this.SaveScripts($cmdLine, (-not $runNow))
+		$this.SaveScripts($cmdLine)
 
 		if ($runNow) {
 			$this.RunNow($cmdLine)
@@ -89,7 +89,7 @@ the script command line to a file and run it later.
 		}
 	}
 
-	[void]SaveScripts([string] $setupCmdLine, [bool] $showRunInstruction) {
+	[void]SaveScripts([string] $setupCmdLine) {
 
 		$setupScriptPath = join-path $this.config.workDir 'run-setup.ps1'
 		Write-Host "`nWriting $setupScriptPath..."

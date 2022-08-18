@@ -4,7 +4,7 @@ class MariaDBOptions : Step {
 Specify whether you want to customize MariaDB options.
 '@
 
-	static [string] $defaultCharacterSet = 'UTF8'
+	static [string] $defaultCharacterSet = 'utf8'
 	static [string] $defaultCollation = 'utf8_general_ci'
 	static [int]    $defaultLowerCaseTableNames = 0
 
