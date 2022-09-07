@@ -5,7 +5,7 @@
 .DESCRIPTION Establishes setup graph and starts guided setup
 #>
 
-using module @{ModuleName='guided-setup'; RequiredVersion='1.6.0' }
+using module @{ModuleName='guided-setup'; RequiredVersion='1.7.0' }
 
 $ErrorActionPreference = 'Stop'
 $VerbosePreference = 'Continue'

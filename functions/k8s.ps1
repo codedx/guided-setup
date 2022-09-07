@@ -1039,3 +1039,17 @@ function Test-SetupKubernetesVersion([ref] $messages, $k8sRequiredMajorVersion, 
 	}
 	return $messages.Value.Length -eq 0
 }
+
+function Get-VirtualCpuCountFromReservation([string] $cpuReservation) {
+
+	if ($cpuReservation -notmatch '(?<cpu>(\d+))m?') {
+		throw "CPU reservation is not formatted correctly. Specify CPU count with optional 'm' suffix"
+	}
+
+	$cpuReservationNoSuffix = [convert]::ToSingle($matches.cpu)
+	if ($cpuReservationNoSuffix -gt 64) {
+		$cpuReservationNoSuffix = $cpuReservationNoSuffix / 1000
+	}
+
+	[math]::Floor($cpuReservationNoSuffix)
+}
