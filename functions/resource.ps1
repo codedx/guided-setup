@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 7eadb850-7e43-4308-a9fa-0119a0a883a3
 .AUTHOR Code Dx
 .DESCRIPTION Includes resource-related helpers
@@ -174,6 +174,15 @@ function New-SealedSecret([io.fileinfo] $secretFileInfo,
 			Remove-Item $secretFileDirectory
 		}
     }
+
+	# replace null/invalid values incompatible with flux v2
+	$content = Get-Content $sealedSecretPath
+	$creationTimestampPattern = '(?m)^\s+creationTimestamp:\snull$'
+	$dataPattern = '(?m)^\s+data:\snull$'
+	$creationTimestampPattern,$dataPattern | ForEach-Object {
+		$content = $content -replace $_,'' | Where-Object { '' -ne $_ }
+	}
+	Set-Content $sealedSecretPath $content
 
     Get-ChildItem $sealedSecretPath
 }
