@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.0
+.VERSION 1.2.0
 .GUID f71af2c9-8015-4f6a-8aab-e4080b4ff428
 .AUTHOR Guided Setup Author
 .DESCRIPTION Conditionally installs guided-setup module
@@ -15,7 +15,7 @@ function Test-AvailableModule($name, $version) {
 }
 
 $guidedSetupModuleName = 'guided-setup'
-$guidedSetupRequiredVersion = '1.8.0' # must match constant in using-module statements
+$guidedSetupRequiredVersion = '1.9.0' # must match constant in using-module statements
 
 $verbosePref = $global:VerbosePreference
 try {

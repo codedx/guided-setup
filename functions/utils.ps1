@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 6d09dd8f-2f19-4e91-9c1a-dfd848e50884
 .AUTHOR Code Dx
 .DESCRIPTION Includes utility-related helpers.
@@ -185,6 +185,15 @@ function ConvertTo-YamlStringArray([string[]] $items) {
 	}
 
 	'[' + "'{0}'" -f ([string]::Join("','", $items)) + ']'
+}
+
+function ConvertTo-YamlIntArray([int[]] $items) {
+
+	if ($null -eq $items) {
+		return '[]'
+	}
+
+	'[' + "{0}" -f ([string]::Join(",", $items)) + ']'
 }
 
 function ConvertTo-PsonStringArray([string[]] $items) {
