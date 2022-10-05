@@ -1,19 +1,28 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 04273f72-e001-415b-add0-e5e95e378355
 .AUTHOR Code Dx
 .DESCRIPTION Includes Helm-related helpers
 #>
 
-function Get-HelmReleaseAppVersion([string] $namespace, [string] $releaseName) {
+function Get-HelmReleaseHistory([string] $namespace, [string] $releaseName) {
 
 	$history = helm -n $namespace history $releaseName --max 1 -o json
 	if ($null -eq $history) {
 		return $null
 	}
 
-	$historyJson = convertfrom-json $history
-	new-object Management.Automation.SemanticVersion($historyJson.app_version)
+	convertfrom-json $history
+}
+
+function Get-HelmReleaseAppVersion([string] $namespace, [string] $releaseName) {
+
+	$history = Get-HelmReleaseHistory $namespace $releaseName
+	if ($null -eq $history) {
+		return $null
+	}
+
+	new-object Management.Automation.SemanticVersion($history.app_version)
 }
 
 function Add-HelmRepo([string] $name, [string] $url) {
