@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.0
+.VERSION 1.2.0
 .GUID 7eadb850-7e43-4308-a9fa-0119a0a883a3
 .AUTHOR Code Dx
 .DESCRIPTION Includes resource-related helpers
@@ -306,6 +306,8 @@ function New-HelmRelease(
 	[string]    $namespace,
 	[Parameter(Position=2)] [Parameter(ParameterSetName='GitChart')] [Parameter(ParameterSetName='RepoChart')]
 	[string]    $releaseName,
+	[Parameter(Position=3)] [Parameter(ParameterSetName='GitChart')] [Parameter(ParameterSetName='RepoChart')]
+	[string]    $timeout = '5m0s',
 	[Parameter(ParameterSetName='GitChart')]
 	[string]    $chartGitName,
 	[Parameter(ParameterSetName='GitChart')]
@@ -396,6 +398,7 @@ metadata:
   namespace: {2}
 spec:
   releaseName: {3}
+  timeout: {9}
   chart:
 {4}
 {5}
@@ -407,7 +410,8 @@ spec:
 	($useHelmController ? 'helm.toolkit.fluxcd.io/v2beta1' : 'helm.fluxcd.io/v1'),
 	$name,$namespace,$releaseName,$chartSource,$valuesFrom,$values,
 	($useHelmController ? '  interval: 1m0s' : ''),
-	($useHelmController ? "skipCRDs: true" : "crds: 'Skip'")
+	($useHelmController ? "skipCRDs: true" : "crds: 'Skip'"),
+	$timeout
 
     New-ResourceFile 'HelmRelease' $namespace $name $helmRelease
 }
@@ -418,7 +422,8 @@ function New-HelmCommand(
 	[string]    $releaseName,
 	[string]    $chartRootPath,
 	[string[]]  $valuesPaths,
-	[hashtable] $dockerImageNames) {
+	[hashtable] $dockerImageNames,
+	[string]    $timeout = '5m0s') {
 
 	$crdAction = '--skip-crds'
 	$valuesParam = '--reset-values' # merge $values with the latest, default chart values
@@ -441,7 +446,7 @@ function New-HelmCommand(
 	}
 	$values += $helmValuesPath
 
-	$helmOutput = "helm upgrade --namespace $namespace --install $crdAction $valuesParam "
+	$helmOutput = "helm upgrade --namespace $namespace --install --timeout $timeout $crdAction $valuesParam "
 	$values | ForEach-Object {
 		$helmOutput += "--values ""$_"" "
 	}

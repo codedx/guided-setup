@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.0
+.VERSION 1.2.0
 .GUID 04273f72-e001-415b-add0-e5e95e378355
 .AUTHOR Code Dx
 .DESCRIPTION Includes Helm-related helpers
@@ -58,6 +58,7 @@ function Invoke-HelmCommand([string] $message,
 	[int]      $waitSeconds, 
 	[string]   $namespace, 
 	[string]   $releaseName, 
+	[string]   $timeout = '5m0s',
 	[string]   $chartReference, 
 	[string]   $valuesFile,  
 	[string[]] $extraValuesPaths, 
@@ -105,8 +106,8 @@ function Invoke-HelmCommand([string] $message,
 			$versionParam = $versionParam + "--version"
 			$versionParam = $versionParam + "$version"
 		}
-		
-		Write-Verbose "Running Helm Upgrade: $message..."
+	
+		Write-Verbose "Running Helm Upgrade: $message (timeout $timeout)..."
 
 		$dryRunParam = $dryRun ? '--dry-run' : ''
 		$debugParam = $dryRun ? '--debug' : ''
@@ -117,7 +118,7 @@ function Invoke-HelmCommand([string] $message,
 		}
 
 		$crdAction = $skipCRDs ? '--skip-crds' : ''
-		$helmOutput = helm upgrade --namespace $namespace --install $valuesParam $releaseName @($values) $chartReference @($versionParam) $crdAction $dryRunParam $debugParam
+		$helmOutput = helm upgrade --namespace $namespace --install $valuesParam $releaseName --timeout $timeout @($values) $chartReference @($versionParam) $crdAction $dryRunParam $debugParam
 		if ($LASTEXITCODE -ne 0) {
 			throw "Unable to run helm upgrade/install, helm exited with code $LASTEXITCODE."
 		}
