@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.2.0
+.VERSION 1.3.0
 .GUID 04273f72-e001-415b-add0-e5e95e378355
 .AUTHOR Code Dx
 .DESCRIPTION Includes Helm-related helpers
@@ -67,12 +67,6 @@ function Invoke-HelmCommand([string] $message,
 	[switch]   $dryRun,
 	[switch]   $skipCRDs) {
 
-	if (-not $dryRun) {
-		if (-not (Test-Namespace $namespace)) {
-			New-Namespace  $namespace
-		}
-	}
-
 	if (test-path $chartReference -pathtype container) {
 		Write-Verbose 'Running helm dependency update...'
 		helm dependency update $chartReference | Out-Null
@@ -82,7 +76,11 @@ function Invoke-HelmCommand([string] $message,
 	}
 
 	if (-not $dryRun) {
-		Wait-AllRunningPods "Pre-Helm Install: $message" $waitSeconds $namespace
+		if (Test-Namespace $namespace) {
+			Wait-AllRunningPods "Pre-Helm Install: $message" $waitSeconds $namespace
+		} else {
+			Write-Verbose "Skipping pre-helm install check because namespace '$namespace' does not exist or insufficient privileges affected the namespace test."
+		}
 	}
 	
 	# NOTE: Latter values files take precedence over former ones
@@ -118,7 +116,7 @@ function Invoke-HelmCommand([string] $message,
 		}
 
 		$crdAction = $skipCRDs ? '--skip-crds' : ''
-		$helmOutput = helm upgrade --namespace $namespace --install $valuesParam $releaseName --timeout $timeout @($values) $chartReference @($versionParam) $crdAction $dryRunParam $debugParam
+		$helmOutput = helm upgrade --namespace $namespace --install --create-namespace $valuesParam $releaseName --timeout $timeout @values $chartReference @versionParam $crdAction $dryRunParam $debugParam
 		if ($LASTEXITCODE -ne 0) {
 			throw "Unable to run helm upgrade/install, helm exited with code $LASTEXITCODE."
 		}

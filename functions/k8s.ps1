@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.0.1
 .GUID bfaf255e-8e7b-4354-824f-46ac9625cab5
 .AUTHOR Code Dx
 .DESCRIPTION Includes Kubernetes-related helpers
@@ -107,7 +107,7 @@ function Get-KubectlContexts([switch] $nameOnly) {
 	if ($nameOnly) {
 		$output = '-o','name'
 	}
-	$contexts = kubectl config get-contexts @($output)
+	$contexts = kubectl config get-contexts @output
 	if ($LASTEXITCODE -ne 0) {
 		throw "Unable to get kubectl contexts, kubectl exited with code $LASTEXITCODE."
 	}
