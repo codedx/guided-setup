@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.1
+.VERSION 1.1.0
 .GUID bfaf255e-8e7b-4354-824f-46ac9625cab5
 .AUTHOR Code Dx
 .DESCRIPTION Includes Kubernetes-related helpers
@@ -81,6 +81,10 @@ function Get-KubectlServerVersion {
 
 	$version = Get-KubectlServerSemanticVersion
 	"$($version[1]).$($version[2])"
+}
+
+function Get-KubectlServerVersionNumber {
+	[float]::Parse((Get-KubectlServerVersion))
 }
 
 function Get-KubectlServerVersionMajor {

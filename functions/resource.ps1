@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.2.0
+.VERSION 1.3.0
 .GUID 7eadb850-7e43-4308-a9fa-0119a0a883a3
 .AUTHOR Code Dx
 .DESCRIPTION Includes resource-related helpers
@@ -446,11 +446,12 @@ function New-HelmCommand(
 	}
 	$values += $helmValuesPath
 
-	$helmOutput = "helm upgrade --namespace $namespace --install --timeout $timeout $crdAction $valuesParam "
+	$helmOutput =  "helm dependency update ""$chartRootPath""`n"
+	$helmOutput += "helm upgrade --namespace $namespace --install --timeout $timeout $crdAction $valuesParam "
 	$values | ForEach-Object {
 		$helmOutput += "--values ""$_"" "
 	}
-	$helmOutput += "$releaseName $chartRootPath"
+	$helmOutput += "$releaseName ""$chartRootPath"""
 
 	New-ResourceFile 'HelmCommand' $namespace "helmcommand-install-$releaseName" $helmOutput
 }
