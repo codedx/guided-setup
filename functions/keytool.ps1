@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID d73b9c33-1ca5-40c2-bbce-ff18efd062ab
 .AUTHOR Code Dx
 .DESCRIPTION Includes keytool-related helpers
@@ -32,6 +32,12 @@ function Set-KeystorePassword([string] $keystorePath, [string] $keystorePwd, [st
 	}
 }
 
+function Test-KeystoreAlias([string] $keystorePath, [string] $keystorePwd, [string] $aliasName) {
+
+	keytool -list -alias $aliasName -keystore $keystorePath -storepass (Get-KeystorePasswordEscaped $keystorePwd) | Out-Null
+	$?
+}
+
 function Remove-KeystoreAlias([string] $keystorePath, [string] $keystorePwd, [string] $aliasName) {
 
 	keytool -delete -alias $aliasName -keystore $keystorePath -storepass (Get-KeystorePasswordEscaped $keystorePwd)
@@ -57,7 +63,9 @@ function Import-TrustedCaCert([string] $keystorePath, [string] $keystorePwd, [st
 
 	$aliasName = Get-TrustedCaCertAlias $certFile
 
-	Remove-KeystoreAlias $keystorePath $keystorePwd $aliasName
+	if (Test-KeystoreAlias $keystorePath $keystorePwd $aliasName) {
+		Remove-KeystoreAlias $keystorePath $keystorePwd $aliasName
+	}
 	Add-KeystoreAlias $keystorePath $keystorePwd $aliasName $certFile
 }
 

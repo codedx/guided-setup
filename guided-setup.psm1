@@ -754,10 +754,10 @@ class IntegerQuestion : Question {
 
 class PathQuestion : Question {
 
-	[microsoft.powershell.commands.testpathtype] $type
+	[bool] $isDirectory
 
-	PathQuestion([string] $promptText, [microsoft.powershell.commands.testpathtype] $type, [bool] $allowEmptyResponse) : base($promptText) {
-		$this.type = $type
+	PathQuestion([string] $promptText, [bool] $isDirectory, [bool] $allowEmptyResponse) : base($promptText) {
+		$this.isDirectory = $isDirectory
 		$this.allowEmptyResponse = $allowEmptyResponse
 	}
 
@@ -774,22 +774,33 @@ class PathQuestion : Question {
 				break
 			}
 
-			if (Test-Path $this.response -PathType $this.type) {
+			$pathType = 'Leaf'
+			if ($this.isDirectory) {
+				$pathType = 'Container'
+			}
+
+			if (Test-Path $this.response -PathType $pathType) {
 				break
 			}
 
-			$pathType = 'file'
-			if ($this.type -eq [microsoft.powershell.commands.testpathtype]::Container) {
-				$pathType = 'directory'
+			$path = $this.response.Trim("'").Trim('"')
+			if (Test-Path $path -PathType $pathType) {
+				$this.response = $path
+				break
 			}
-			Write-Host "Unable to read $pathType '$($this.response)' - the $pathType may not exist or you may not have permissions to read it - please enter another $pathType path"
+
+			$pathTypeMessage = 'file'
+			if ($this.isDirectory) {
+				$pathTypeMessage = 'directory'
+			}
+			Write-Host "Unable to read $pathTypeMessage '$($this.response)' - the $pathTypeMessage may not exist or you may not have permissions to read it - please enter another $pathTypeMessage path"
 		}
 	}
 }
 
 class CertificateFileQuestion : PathQuestion {
 
-	CertificateFileQuestion([string] $promptText, [bool] $allowEmptyResponse) : base($promptText, [microsoft.powershell.commands.testpathtype]::leaf, $allowEmptyResponse) {
+	CertificateFileQuestion([string] $promptText, [bool] $allowEmptyResponse) : base($promptText, $false, $allowEmptyResponse) {
 	}
 
 	[void]Prompt() {
