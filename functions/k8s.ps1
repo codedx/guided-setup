@@ -987,12 +987,8 @@ function Copy-K8sItem([string] $namespace,
 	}
 }
 
-function Test-KubectlUsesDryRunBool { 
-	$null -ne (kubectl create --help | select-string '--dry-run=false' -SimpleMatch) 
-}
-
 function Get-KubectlDryRunParam {
-	(Test-KubectlUsesDryRunBool) ? '--dry-run=true' : '--dry-run=client'
+	'--dry-run=client'
 }
 
 function Test-ResourceApiVersion([string] $resource, [string] $apiVersion) {
