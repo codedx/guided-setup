@@ -1,7 +1,8 @@
 <#PSScriptInfo
 .VERSION 1.1.0
 .GUID bfaf255e-8e7b-4354-824f-46ac9625cab5
-.AUTHOR Code Dx
+.AUTHOR Black Duck
+.COPYRIGHT Copyright 2024 Black Duck Software, Inc. All rights reserved.
 .DESCRIPTION Includes Kubernetes-related helpers
 #>
 
@@ -881,6 +882,17 @@ function Get-ServiceAccountName([string] $namespace,
 		throw "Unable to set replicas for $resourceType named $resourceName, kubectl exited with code $LASTEXITCODE."
 	}
 	$name
+}
+
+function Get-PodLog([string] $namespace,
+	[string] $containerName,
+	[string] $podName) {
+
+	$log = kubectl -n $namespace logs -c $containerName $podName
+	if (0 -ne $LASTEXITCODE) {
+		throw "Unable to get logs for container $containerName and pod $podName, kubectl exited with code $LASTEXITCODE."
+	}
+	$log
 }
 
 function Set-DeploymentReplicas([string] $namespace,

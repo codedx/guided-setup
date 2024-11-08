@@ -1,7 +1,8 @@
 <#PSScriptInfo
 .VERSION 1.1.0
 .GUID 0bccb44c-14f1-44c0-b41b-3fa02f5bb412
-.AUTHOR Code Dx
+.AUTHOR Black Duck
+.COPYRIGHT Copyright 2024 Black Duck Software, Inc. All rights reserved.
 .DESCRIPTION Includes MariaDB-related helpers
 #>
 

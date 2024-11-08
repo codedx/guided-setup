@@ -1,7 +1,8 @@
 <#PSScriptInfo
 .VERSION 1.0.0
 .GUID fc6ce9ac-58ac-4e50-befb-754f063752f0
-.AUTHOR Code Dx
+.AUTHOR Black Duck
+.COPYRIGHT Copyright 2024 Black Duck Software, Inc. All rights reserved.
 .DESCRIPTION Includes Docker-related helpers
 #>
 

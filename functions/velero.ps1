@@ -1,7 +1,8 @@
 <#PSScriptInfo
 .VERSION 1.0.0
 .GUID d59ec807-d430-4d6a-ae7b-6e0ad9e8f9b5
-.AUTHOR Code Dx
+.AUTHOR Black Duck
+.COPYRIGHT Copyright 2024 Black Duck Software, Inc. All rights reserved.
 .DESCRIPTION Includes Velero-related helpers.
 #>
 

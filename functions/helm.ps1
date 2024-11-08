@@ -1,7 +1,8 @@
 <#PSScriptInfo
 .VERSION 1.3.1
 .GUID 04273f72-e001-415b-add0-e5e95e378355
-.AUTHOR Code Dx
+.AUTHOR Black Duck
+.COPYRIGHT Copyright 2024 Black Duck Software, Inc. All rights reserved.
 .DESCRIPTION Includes Helm-related helpers
 #>
 
@@ -150,12 +151,29 @@ function Get-HelmVersionMajorMinor() {
 }
 
 function Get-HelmChartFullname([string] $releaseName, [string] $chartName) {
+	Get-HelmChartFullnameEquals $releaseName $chartName
+}
+
+function Get-HelmChartFullnameContains([string] $releaseName, [string] $chartName) {
+
+	$fullname = $releaseName
+	if (-not ($releaseName.Contains($chartName))) {
+		$fullname = "$releaseName-$chartName"
+	}
+	Get-CommonName $fullname
+}
+
+function Get-HelmChartFullnameEquals([string] $releaseName, [string] $chartName) {
 
 	$fullname = $releaseName
 	if ($releaseName -cne $chartName) {
 		$fullname = "$releaseName-$chartName"
 	}
 	Get-CommonName $fullname
+}
+
+function Get-HelmChartFullnameConcat([string] $releaseName, [string] $chartName) {
+	Get-CommonName "$releaseName-$chartName"
 }
 
 function Get-CommonName([string] $name) {
@@ -165,4 +183,13 @@ function Get-CommonName([string] $name) {
 		$name = $name.Substring(0, 63)
 	}
 	$name.TrimEnd('-')
+}
+
+function Get-AllHelmValues([string] $namespace, [string] $releaseName) {
+
+	$values = helm -n $namespace get values $releaseName -a -o json
+	if ($LASTEXITCODE -ne 0) {
+		throw "Unable to get release values, helm exited with code $LASTEXITCODE."
+	}
+	ConvertFrom-Json $values
 }
