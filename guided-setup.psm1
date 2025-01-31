@@ -908,6 +908,12 @@ class GuidedSetupStep : GraphVertex {
 
 		Write-HostSection $this.title ($this.GetMessage())
 
+		$footer = $this.GetMessageFooter()
+		if ("" -ne $footer) {
+			Write-Host $footer
+			Write-Host
+		}
+
 		while ($true) {
 			$question = $this.MakeQuestion($this.prompt)
 			$question.Prompt()
@@ -933,6 +939,10 @@ class GuidedSetupStep : GraphVertex {
 
 	[string]GetMessage() {
 		return $this.message
+	}
+
+	[string]GetMessageFooter() {
+		return ""
 	}
 
 	[void]Reset() {
